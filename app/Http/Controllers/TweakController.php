@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Tweak;
 
 class TweakController extends Controller
 {
@@ -11,11 +12,7 @@ class TweakController extends Controller
      */
     public function index()
     {
-        $tweaks = [
-            ['user' => 'bob', 'message' => 'eat meatballs today!', 'time' => '2024-06-01 10:00:00'],
-            ['user' => 'alice', 'message' => 'i think earth is indeed round', 'time' => '2024-06-01 11:00:00'],
-            ['user' => 'charlie', 'message' => 'today is leg day!', 'time' => '2024-06-01 12:00:00'],
-        ];
+        $tweaks = Tweak::with('user')->latest()->take(20)->get();
         return view('home', ['tweaks' => $tweaks]);
     }
 
