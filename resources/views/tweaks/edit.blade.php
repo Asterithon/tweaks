@@ -1,22 +1,26 @@
 <x-layout>
     <x-slot:title>
-        Welcome
+        Edit Tweak
     </x-slot:title>
 
-    <!-- Tweaks Form -->
+    <div class="max-w-2xl mx-auto">
+        <h1 class="text-3xl font-bold mt-8">Edit Tweak</h1>
+
         <div class="card bg-base-100 shadow mt-8">
             <div class="card-body">
-                <span class="card-title">Share your thought</span>
-                <form method="POST" action="/tweaks">
+                <form method="POST" action="/tweaks/{{ $tweak -> id }}">
                     @csrf
+                    @method('PUT')
+
                     <div class="form-control w-full">
                         <textarea
                             name="message"
-                            placeholder="What's on your mind?"
                             class="textarea textarea-bordered w-full resize-none @error('message') textarea-error @enderror"
                             rows="4"
                             maxlength="255"
-                        >{{ old('message') }}</textarea>
+                            required
+                        >{{ old('message', $tweak -> message) }}</textarea>
+
                         @error('message')
                             <div class="label">
                                 <span class="label-text-alt text-error">{{ $message }}</span>
@@ -24,21 +28,16 @@
                         @enderror
                     </div>
 
-                    <div class="mt-4 flex items-center justify-end">
+                    <div class="card-actions justify-between mt-4">
+                        <a href="/" class="btn btn-ghost btn-sm">
+                            Cancel
+                        </a>
                         <button type="submit" class="btn btn-primary btn-sm">
-                            Tweak
+                            Update Tweak
                         </button>
                     </div>
                 </form>
             </div>
         </div>
-
-    <!-- Tweaks List -->
-    <div class="space-y-4 mt-8">
-        @forelse ($tweaks as $tweak)
-            <x-tweak :tweak="$tweak" />
-        @empty
-            <p class="text-center text-base-content/60">No tweaks found. Be the first to Tweak!</p>
-        @endforelse
     </div>
 </x-layout>
